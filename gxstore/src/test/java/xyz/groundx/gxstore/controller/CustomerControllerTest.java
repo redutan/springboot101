@@ -16,9 +16,11 @@ import xyz.groundx.gxstore.model.CustomerDto;
 import xyz.groundx.gxstore.service.CustomerService;
 
 import java.util.List;
+import java.util.Locale;
 
-import static org.mockito.BDDMockito.given;
-import static org.mockito.BDDMockito.then;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.*;
+import static org.mockito.Mockito.never;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -31,6 +33,7 @@ class CustomerControllerTest {
     ObjectMapper om;
     @MockBean
     CustomerService service;
+
 
     @Test
     void register() throws Exception {
@@ -53,6 +56,34 @@ class CustomerControllerTest {
            .andExpect(header().string(HttpHeaders.LOCATION, "http://localhost/customers/1"))
         ;
         then(service).should().register(dto);
+    }
+
+    @Test
+    void register_invalidParametersTo400() throws Exception {
+        String requestBody = """
+                {
+                    "firstName": "jordan",
+                    "lastName": "jung",
+                    "email": "account @address.com",
+                    "password": "P@ssW0r"
+                }
+                """;
+
+        mvc.perform(post("/customers")
+                   .locale(Locale.KOREAN)   // Accept-Language: ko, ko_KR
+                   .contentType(MediaType.APPLICATION_JSON)
+                   .content(requestBody))
+           .andDo(print())
+           .andExpect(status().isBadRequest())
+           .andExpect(jsonPath("$.type").value("about:blank"))
+           .andExpect(jsonPath("$.title").value("Bad Request"))
+           .andExpect(jsonPath("$.status").value(HttpStatus.BAD_REQUEST.value()))
+           .andExpect(jsonPath("$.instance").value("/customers"))
+           .andExpect(jsonPath("$.fieldErrors.length()").value(2))
+           .andExpect(jsonPath("$.fieldErrors[?(@.field=='email')].defaultMessage").value("올바른 형식의 이메일 주소여야 합니다"))
+           .andExpect(jsonPath("$.fieldErrors[?(@.field=='password')].defaultMessage").value("\"^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,20}$\"와 일치해야 합니다"))
+        ;
+        then(service).should(never()).register(any());
     }
 
     @Test
@@ -174,5 +205,41 @@ class CustomerControllerTest {
            .andExpect(jsonPath("$.instance").value("/customers/-1"))
         ;
         then(service).should().modifyCustomer(notExistsId, command);
+    }
+
+    @Test
+    void modify_invalidParametersTo400() throws Exception {
+        Long customerId = 583775004L;
+        String requestBody = """
+                {
+                    "firstName": null,
+                    "lastName": ""
+                }
+                """;
+
+        mvc.perform(put("/customers/{0}", customerId)
+                   .locale(Locale.JAPAN)
+                   .contentType(MediaType.APPLICATION_JSON)
+                   .content(requestBody))
+           .andDo(print())
+           .andExpect(status().isBadRequest())
+           .andExpect(jsonPath("$.type").value("about:blank"))
+           .andExpect(jsonPath("$.title").value("Bad Request"))
+           .andExpect(jsonPath("$.status").value(HttpStatus.BAD_REQUEST.value()))
+           .andExpect(jsonPath("$.instance").value("/customers/%s".formatted(customerId)))
+           .andExpect(jsonPath("$.fieldErrors.length()").value(1))
+           .andExpect(jsonPath("$.fieldErrors[0].defaultMessage").value("名前を入力してください。"))
+        ;
+        then(service).should(never()).modifyCustomer(any(), any());
+    }
+
+    @Test
+    void deleteApi() throws Exception {
+        Long customerId = 4943905405L;
+
+        mvc.perform(delete("/customers/{0}", customerId))
+           .andExpect(status().isNoContent())
+        ;
+        then(service).should().deleteCustomer(customerId);
     }
 }

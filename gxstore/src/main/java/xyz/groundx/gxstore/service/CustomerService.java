@@ -40,4 +40,8 @@ public class CustomerService {
         Customer saved = customerRepository.save(customer);
         return new CustomerDto.View(saved);
     }
+
+    public void deleteCustomer(Long customerId) {
+        // TODO
+    }
 }

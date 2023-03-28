@@ -110,5 +110,18 @@ class CustomerServiceTest extends Specification {
         then:
         thrown(CustomerNotFoundException)
     }
+
+    def "DeleteCustomer"() {
+        given:
+        def customerId = 2398432L
+        and:
+        1 * customerRepository.deleteById(customerId)
+
+        when:
+        service.deleteCustomer(customerId)
+
+        then:
+        true
+    }
 }
 

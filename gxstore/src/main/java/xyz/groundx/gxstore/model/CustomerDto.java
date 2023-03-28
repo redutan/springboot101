@@ -17,11 +17,14 @@ public class CustomerDto {
 
     public record View(Long customerId, String firstName, String lastName, String email) {
         public View(Customer source) {
-            this(source.getCustomerId(), source.getFirstName(), source.getLastName(), source.getEmail());
+            this(source.getCustomerId(),
+                    source.getFirstName(),
+                    source.getLastName(),
+                    source.getEmail());
         }
     }
 
-    public record Modify(@NotBlank(message = "{xyz.groundx.gxxtore.first-name.not-blank}") String firstName,
+    public record Modify(@NotBlank(message = "{xyz.groundx.gxstore.first-name.not-blank}") String firstName,
                          String lastName) {
     }
 }

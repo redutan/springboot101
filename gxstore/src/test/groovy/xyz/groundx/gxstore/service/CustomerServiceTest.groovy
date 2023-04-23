@@ -95,7 +95,7 @@ class CustomerServiceTest extends Specification {
         result == new CustomerDto.View(detail)
     }
 
-    def "ModifyCustomer.  but notFound > throw CustomerNotFoundException"() {
+    def "ModifyCustomer. but notFound > throw CustomerNotFoundException"() {
         given:
         def customerId = -1L
         def command = new CustomerDto.Modify("myeongju", "jeong")

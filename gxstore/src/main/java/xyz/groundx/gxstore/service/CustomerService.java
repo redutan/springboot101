@@ -1,5 +1,7 @@
 package xyz.groundx.gxstore.service;
 
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import xyz.groundx.gxstore.exception.CustomerNotFoundException;
 import xyz.groundx.gxstore.model.Customer;
 import xyz.groundx.gxstore.model.CustomerDto;
@@ -8,6 +10,7 @@ import xyz.groundx.gxstore.repository.CustomerRepository;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Service
 public class CustomerService {
     private final CustomerRepository customerRepository;
 
@@ -33,6 +36,7 @@ public class CustomerService {
                                  .orElseThrow(() -> new CustomerNotFoundException(customerId));
     }
 
+    @Transactional
     public CustomerDto.View modifyCustomer(Long customerId, CustomerDto.Modify command) {
         Customer customer = customerRepository.findById(customerId)
                                               .orElseThrow(() -> new CustomerNotFoundException(customerId));

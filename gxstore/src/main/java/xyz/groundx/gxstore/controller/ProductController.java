@@ -19,4 +19,9 @@ public class ProductController {
     public List<Product> products() {
         return productService.getAllProducts();
     }
+
+    @GetMapping("/promotions")
+    public List<Product> promotions() {
+        return productService.getPromotions();
+    }
 }

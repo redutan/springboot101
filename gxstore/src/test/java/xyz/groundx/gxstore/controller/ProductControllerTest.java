@@ -35,10 +35,28 @@ class ProductControllerTest {
                    .contentType(MediaType.APPLICATION_JSON))
            .andExpect(status().isOk())
            .andExpect(jsonPath("$.length()").value(2))
-           .andExpect(jsonPath("$[0].productId").value(1L))
-           .andExpect(jsonPath("$[1].productId").value(2L));
+           .andExpect(jsonPath("$[0].id").value(1L))
+           .andExpect(jsonPath("$[1].id").value(2L));
 
         // then
         then(service).should().getAllProducts();
+    }
+
+    @Test
+    public void promotions() throws Exception {
+        // given
+        List<Product> products = List.of(new Product(1L), new Product(2L));
+        given(service.getPromotions()).willReturn(products);
+
+        // when
+        mvc.perform(get("/promotions")
+                   .contentType(MediaType.APPLICATION_JSON))
+           .andExpect(status().isOk())
+           .andExpect(jsonPath("$.length()").value(2))
+           .andExpect(jsonPath("$[0].id").value(1L))
+           .andExpect(jsonPath("$[1].id").value(2L));
+
+        // then
+        then(service).should().getPromotions();
     }
 }

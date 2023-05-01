@@ -29,4 +29,17 @@ class ProductServiceTest extends Specification {
         and:
         results == products
     }
+
+    def "GetPromotions"() {
+        given:
+        var products = [new Product(), new Product()]
+
+        when:
+        var results = service.getPromotions()
+
+        then:
+        1 * productRepository.findAllByPromotionIsNotNull() >> products
+        and:
+        results == products
+    }
 }

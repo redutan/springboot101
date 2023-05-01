@@ -30,4 +30,20 @@ public class ProductControllerIntegrationTest {
            .andExpect(jsonPath("$[0].desc").value(""))
            .andExpect(jsonPath("$[0].productname").value("Strings"));
     }
+
+    @Test
+    public void promotions(@Autowired MockMvc mvc) throws Exception {
+        mvc.perform(get("/promotions")
+                   .contentType(MediaType.APPLICATION_JSON))
+           .andExpect(status().isOk())
+           .andExpect(jsonPath("$.length()").value(3))
+           .andExpect(jsonPath("$[0].id").value(2L))
+           .andExpect(jsonPath("$[0].img").value("img/redguitar.jpeg"))
+           .andExpect(jsonPath("$[0].small_img").value("img/img-small/redguitar.jpeg"))
+           .andExpect(jsonPath("$[0].imgalt").value("redg"))
+           .andExpect(jsonPath("$[0].price").value(299.00))
+           .andExpect(jsonPath("$[0].promotion").value(240.00))
+           .andExpect(jsonPath("$[0].desc").value(""))
+           .andExpect(jsonPath("$[0].productname").value("Red Guitar"));
+    }
 }

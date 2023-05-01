@@ -19,4 +19,9 @@ public class ProductService {
     public List<Product> getAllProducts() {
         return productRepository.findAll();
     }
+
+    @Transactional(readOnly = true)
+    public List<Product> getPromotions() {
+        return productRepository.findAllByPromotionIsNotNull();
+    }
 }

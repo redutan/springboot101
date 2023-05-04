@@ -30,6 +30,21 @@ class ProductServiceTest extends Specification {
         results == products
     }
 
+    def "GetAllProductsOnCache"() {
+        given:
+        var products = [new Product(), new Product()]
+
+        when:
+        var results = service.getAllProducts()
+        var results2 = service.getAllProducts()
+
+        then:
+        1 * productRepository.findAll() >> products
+        and:
+        results == products
+        results2 == products
+    }
+
     def "GetPromotions"() {
         given:
         var products = [new Product(), new Product()]
@@ -41,5 +56,20 @@ class ProductServiceTest extends Specification {
         1 * productRepository.findAllByPromotionIsNotNull() >> products
         and:
         results == products
+    }
+
+    def "GetPromotionsOnCache"() {
+        given:
+        var products = [new Product(), new Product()]
+
+        when:
+        var results = service.getPromotions()
+        var results2 = service.getPromotions()
+
+        then:
+        1 * productRepository.findAllByPromotionIsNotNull() >> products
+        and:
+        results == products
+        results2 == products
     }
 }

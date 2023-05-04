@@ -1,6 +1,0 @@
-spring:
-  jpa:
-    defer-datasource-initialization: true
-    hibernate:
-      naming:
-        physical-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy

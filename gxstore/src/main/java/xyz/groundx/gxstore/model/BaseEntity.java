@@ -3,10 +3,11 @@ package xyz.groundx.gxstore.model;
 import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @MappedSuperclass
-public class BaseEntity {
+public class BaseEntity implements Serializable {
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
     @Column(name = "updated_at", nullable = false)

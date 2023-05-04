@@ -3,6 +3,7 @@ package xyz.groundx.gxstore.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 @Table(name = "products") // !!
@@ -14,7 +15,6 @@ public class Product extends BaseEntity {
     private Long productId;
     @Column(name = "image", nullable = false)
     @JsonProperty("img")
-
     private String image;
     @Column(name = "small_img", nullable = false)
     @JsonProperty("small_img")

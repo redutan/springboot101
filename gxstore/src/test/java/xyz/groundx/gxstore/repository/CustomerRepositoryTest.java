@@ -58,6 +58,23 @@ class CustomerRepositoryTest {
     }
 
     @Test
+    void findAllByLastName() {
+        Customer entity = new Customer("jordan", "jung", "jordan.jung@groundx.xyz", "P@ssW0rd");
+        Customer entity2 = new Customer("winnie", "byun", "winnie.byun@groundx.xyz", "SecretNumber");
+        Customer entity3 = new Customer("ted", "jeong", "ted.jeong@groundx.xyz", "dragAndDrop");
+        Customer save = repository.save(entity);
+        Customer save2 = repository.save(entity2);
+        Customer save3 = repository.save(entity3);
+
+        List<Customer> customers = repository.findAllByLastname("jung");
+
+        assertThat(customers).size().isEqualTo(1);
+        assertThat(customers).extracting(Customer::getCustomerId).allMatch(id -> id > 0L);
+        assertThat(customers.get(0)).extracting(Customer::getCustomerId, Customer::getFirstName, Customer::getLastName, Customer::getEmail)
+                                    .contains(save.getCustomerId(), "jordan", "jung", "jordan.jung@groundx.xyz");
+    }
+
+    @Test
     void modify() {
         Customer entity = new Customer("jordan", "jung", "jordan.jung@groundx.xyz", "P@ssW0rd");
 

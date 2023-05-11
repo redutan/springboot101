@@ -53,7 +53,7 @@ class ProductServiceTest extends Specification {
         var results = service.getPromotions()
 
         then:
-        1 * productRepository.findAllByPromotionIsNotNull() >> products
+        1 * productRepository.findAllByPromotionIsNotNull(sort) >> products
         and:
         results == products
     }
@@ -67,7 +67,7 @@ class ProductServiceTest extends Specification {
         var results2 = service.getPromotions()
 
         then:
-        1 * productRepository.findAllByPromotionIsNotNull() >> products
+        1 * productRepository.findAllByPromotionIsNotNull(sort) >> products
         and:
         results == products
         results2 == products

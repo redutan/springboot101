@@ -2,6 +2,9 @@ package xyz.groundx.gxstore.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import xyz.groundx.gxstore.model.Product;
 
 import java.util.List;
@@ -23,8 +26,13 @@ public class CachedProductQueryProxy implements ProductQueryable {
     }
 
     @Override
-    public List<Product> getPromotions() {
-        return productsTemplate("products:promotions", target::getPromotions);
+    public List<Product> getPromotions(Sort sort) {
+        return productsTemplate("products:promotions", () -> target.getPromotions(sort));
+    }
+
+    @Override
+    public Page<Product> getProducts(Pageable pageable) {
+        return target.getProducts(pageable);
     }
 
     private List<Product> productsTemplate(String cacheKey, Supplier<List<Product>> origin) {

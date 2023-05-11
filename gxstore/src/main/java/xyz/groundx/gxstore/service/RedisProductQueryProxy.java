@@ -8,6 +8,9 @@ import io.lettuce.core.RedisURI;
 import io.lettuce.core.api.sync.RedisCommands;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import xyz.groundx.gxstore.model.Product;
 
 import java.util.List;
@@ -66,9 +69,12 @@ public class RedisProductQueryProxy implements ProductQueryable {
     }
 
     @Override
-    public List<Product> getPromotions() {
-        return this.getAllProducts().stream()
-                   .filter(p -> p.getPromotion() != null)
-                   .collect(Collectors.toList());
+    public List<Product> getPromotions(Sort sort) {
+        return target.getPromotions(sort);
+    }
+
+    @Override
+    public Page<Product> getProducts(Pageable pageable) {
+        return target.getProducts(pageable);
     }
 }

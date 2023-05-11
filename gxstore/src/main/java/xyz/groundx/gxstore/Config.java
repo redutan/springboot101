@@ -13,7 +13,6 @@ import xyz.groundx.gxstore.service.RedisProductQueryProxy;
 
 @Configuration
 public class Config {
-    @Primary
     @Bean
     RedisProductQueryProxy redisProductQueryProxy(DbProductService dbProductService,
                                                   ObjectMapper objectMapper,
@@ -22,7 +21,7 @@ public class Config {
         return new RedisProductQueryProxy(dbProductService, objectMapper, host, port);
     }
 
-    //    @Primary
+    @Primary
     @Bean
     CachedProductQueryProxy cachedProductQueryProxy(DbProductService dbProductService) {
         return new CachedProductQueryProxy(dbProductService);

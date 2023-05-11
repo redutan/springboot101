@@ -26,7 +26,7 @@ public class ProductService {
 
     @Transactional(readOnly = true)
     public List<Product> getPromotions() {
-        return productsTemplate("products:promotions", productRepository::findAllByPromotionIsNotNull);
+        return productsTemplate("products:promotions", () -> productRepository.findAllByPromotionIsNotNull());
     }
 
     private List<Product> productsTemplate(String cacheKey, Supplier<List<Product>> origin) {

@@ -1,6 +1,9 @@
 package xyz.groundx.gxstore.service;
 
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.transaction.annotation.Transactional;
 import xyz.groundx.gxstore.aspect.TryCaching;
 import xyz.groundx.gxstore.model.Product;
@@ -24,8 +27,13 @@ public class CachedProductService implements ProductQueryable {
 
     @TryCaching(name = "product:promotions")
     @Transactional(readOnly = true)
-    public List<Product> getPromotions() {
+    public List<Product> getPromotions(Sort sort) {
         // self-invocation: getAllProducts -> No Caching
         return this.getAllProducts().stream().filter(p -> p.getPromotion() != null).collect(Collectors.toList());
+    }
+
+    @Override
+    public Page<Product> getProducts(Pageable pageable) {
+        return productRepository.findAll(pageable);
     }
 }

@@ -3,13 +3,18 @@ logging:
     root: info
     org.hibernate.type.descriptor.sql: trace
 
+
 spring:
   cache:
     type: redis
-#  data:
-#    redis:
-#      host: localhost
-#      port: 6379
+  data:
+    #    redis:
+    #      host: localhost
+    #      port: 6379
+    web:
+      pageable:
+        one-indexed-parameters: true
+  #        default-page-size: 4
   messages:
     fallback-to-system-locale: false
   jpa:

@@ -23,6 +23,8 @@ dependencies {
 
     runtimeOnly 'com.h2database:h2'
 
+    annotationProcessor 'org.hibernate:hibernate-jpamodelgen:6.2.2.Final'
+
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     // implementation 'org.flywaydb:flyway-core'
     // developmentOnly 'org.springframework.boot:spring-boot-devtools'

@@ -3,8 +3,8 @@ package xyz.groundx.gxstore.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Optional;
 
 @Table(name = "products") // !!
 @Entity
@@ -72,5 +72,10 @@ public class Product extends BaseEntity {
 
     public String getDescription() {
         return description;
+    }
+
+    public BigDecimal getSoldPrice() {
+        return Optional.ofNullable(promotion)
+                       .orElse(price);
     }
 }

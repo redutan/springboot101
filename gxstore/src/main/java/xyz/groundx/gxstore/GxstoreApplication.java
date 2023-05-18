@@ -14,6 +14,7 @@ import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.repository.query.FluentQuery;
 import org.springframework.data.web.config.EnableSpringDataWebSupport;
 import org.springframework.util.StringUtils;
@@ -27,6 +28,7 @@ import java.util.function.Function;
 
 @SpringBootApplication
 @EnableCaching
+@EnableJpaAuditing
 public class GxstoreApplication {
     public static void main(String[] args) {
         SpringApplication.run(GxstoreApplication.class, args);

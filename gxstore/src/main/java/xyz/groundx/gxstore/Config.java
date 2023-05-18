@@ -10,6 +10,9 @@ import xyz.groundx.gxstore.service.CachedProductQueryProxy;
 import xyz.groundx.gxstore.service.CachedProductService;
 import xyz.groundx.gxstore.service.DbProductService;
 import xyz.groundx.gxstore.service.RedisProductQueryProxy;
+import xyz.groundx.gxstore.service.notify.CompositeNotificator;
+import xyz.groundx.gxstore.service.notify.EmailNotificator;
+import xyz.groundx.gxstore.service.notify.KakaotalkNotificator;
 
 @Configuration
 public class Config {
@@ -35,5 +38,11 @@ public class Config {
     @Bean
     CachedProductService cachingAspectProductService(ProductRepository productRepository) {
         return new CachedProductService(productRepository);
+    }
+
+    @Primary
+    @Bean
+    CompositeNotificator compositeNotificator(EmailNotificator emailNotificator, KakaotalkNotificator kakaotalkNotificator) {
+        return new CompositeNotificator(emailNotificator, kakaotalkNotificator);
     }
 }

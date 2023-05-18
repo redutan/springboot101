@@ -5,3 +5,9 @@ INSERT INTO `products` (`image`, `small_img`, `img_alt`, `description`, `product
 	('img/flute.jpeg', 'img/img-small/flute.jpeg', 'flute', '', 'Flute', 210, 190, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
 	('img/blackguitar.jpeg', 'img/img-small/blackguitar.jpeg', 'Black guitar', '', 'Black Guitar', 200, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
 	('img/saxophone.jpeg', 'img/img-small/saxophone.jpeg', 'Saxophone', '', 'Saxophone', 1000, 980, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+
+INSERT INTO `customers` (`first_name`, `last_name`, `email`, `password`) VALUES
+	('jordan', 'jung', 'jordan.jung@groundx.xyz', 'P@ssW0rd'),
+    ('groundx', 'xyz', 'groundx.xyz@groundx.xyz', 'P@ssW0rd2')
+;

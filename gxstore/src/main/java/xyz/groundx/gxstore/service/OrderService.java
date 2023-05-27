@@ -1,5 +1,6 @@
 package xyz.groundx.gxstore.service;
 
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import xyz.groundx.gxstore.exception.InvalidOrderException;
@@ -7,10 +8,8 @@ import xyz.groundx.gxstore.model.*;
 import xyz.groundx.gxstore.repository.CustomerRepository;
 import xyz.groundx.gxstore.repository.OrderRepository;
 import xyz.groundx.gxstore.repository.ProductRepository;
-import xyz.groundx.gxstore.service.notify.EmailNotificator;
-import xyz.groundx.gxstore.service.notify.KakaotalkNotificator;
+import xyz.groundx.gxstore.service.mail.EmailSender;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -18,20 +17,18 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final ProductRepository productRepository;
     private final CustomerRepository customerRepository;
-    private final EmailNotificator emailNotificator;
-    private final KakaotalkNotificator kakaotalkNotificator;
+    private final EmailSender emailSender;
 
     public OrderService(OrderRepository orderRepository,
                         ProductRepository productRepository,
                         CustomerRepository customerRepository,
-                        EmailNotificator emailNotificator,
-                        KakaotalkNotificator kakaotalkNotificator) {
+                        EmailSender emailSender) {
         this.orderRepository = orderRepository;
         this.productRepository = productRepository;
         this.customerRepository = customerRepository;
-        this.emailNotificator = emailNotificator;
-        this.kakaotalkNotificator = kakaotalkNotificator;
+        this.emailSender = emailSender;
     }
+
     @Transactional
     public OrderDto.Response placeOrder(OrderDto.Request command) {
         Long buyerId = command.customerId();
@@ -43,9 +40,28 @@ public class OrderService {
 
         checkDuplicatedOrder(buyerId, productId);
         Order placedOrder = addOrder(product, buyer);
-//        emailNotificator.notifyToEmail(placedOrder, product, buyer);
-//        kakaotalkNotificator.notifyToKakaotalk(placedOrder, product, buyer);
+
+        sendPlacedOrderMail(placedOrder, product, buyer);
         return new OrderDto.Response(placedOrder);
+    }
+
+    private void sendPlacedOrderMail(Order order, Product product, Customer buyer) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom("no_reply@groundx.xyz");
+        message.setTo(buyer.getEmail());
+        message.setSubject("주문 알림 GxStore");
+        message.setText("""
+                [Email] %s %s 고객님,
+                %s 상품을 구매하셨습니다.
+                - 주문번호: %d
+                - 구매가격: %s
+                - 구매일시: %s
+
+                감사합니다."""
+                .formatted(buyer.getLastName(), buyer.getFirstName(), product.getProductName(), order.getOrderId(),
+                        order.getPrice(), order.getPurchaseDate()));
+
+        emailSender.sendEmail(message);
     }
 
     private void checkDuplicatedOrder(Long customerId, Long productId) {
@@ -67,5 +83,9 @@ public class OrderService {
 
     public List<OrderDto.Summary> getCustomerOrders(Long customerId) {
         return orderRepository.findCustomerOrders(customerId);
+    }
+
+    public List<OrderSummary> getCustomerOrders2(Long customerId) {
+        return orderRepository.findCustomerOrders2(customerId);
     }
 }

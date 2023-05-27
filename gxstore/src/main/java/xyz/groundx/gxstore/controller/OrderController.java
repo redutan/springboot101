@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import xyz.groundx.gxstore.exception.InvalidOrderException;
 import xyz.groundx.gxstore.model.OrderDto;
+import xyz.groundx.gxstore.model.OrderSummary;
 import xyz.groundx.gxstore.service.OrderService;
 
 import java.util.List;
@@ -30,6 +31,11 @@ public class OrderController {
     @GetMapping("/customers/{customerId}/orders")
     public List<OrderDto.Summary> customerOrders(@PathVariable Long customerId) {
         return orderService.getCustomerOrders(customerId);
+    }
+
+    @GetMapping("/customers/{customerId}/orders2")
+    public List<OrderSummary> customerOrders2(@PathVariable Long customerId) {
+        return orderService.getCustomerOrders2(customerId);
     }
 
     @ExceptionHandler(InvalidOrderException.class)

@@ -17,6 +17,8 @@ class CustomerRepositoryTest {
 
     @BeforeEach
     void setUp() {
+        repository.deleteAll();
+        repository.flush();
     }
 
     @Test

@@ -8,6 +8,6 @@ INSERT INTO `products` (`image`, `small_img`, `img_alt`, `description`, `product
 
 
 INSERT INTO `customers` (`first_name`, `last_name`, `email`, `password`) VALUES
-	('jordan', 'jung', 'jordan.jung@groundx.xyz', 'P@ssW0rd'),
+	('sera', 'jeong', 'sera.jeong@groundx.xyz', 'P@ssW0rd'),
     ('groundx', 'xyz', 'groundx.xyz@groundx.xyz', 'P@ssW0rd2')
 ;

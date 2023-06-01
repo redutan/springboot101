@@ -5,20 +5,11 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import xyz.groundx.gxstore.model.Order;
-import xyz.groundx.gxstore.model.OrderDto;
 import xyz.groundx.gxstore.model.OrderSummary;
 
 import java.util.List;
 
-public interface OrderRepository extends JpaRepository<Order, Long>, JpaSpecificationExecutor<Order> {
-
-    @Query("""
-            select new xyz.groundx.gxstore.model.OrderDto$Summary(
-                       o.orderId, o.productId, o.customerId, p.productName,
-                       p.smallImage, p.imgAlt, o.price, o.purchaseDate)
-              from Order o inner join Product p on o.productId = p.productId
-             where o.customerId = :customerId""")
-    List<OrderDto.Summary> findCustomerOrders(@Param("customerId") Long customerId);
+public interface OrderRepository extends JpaRepository<Order, Long>, JpaSpecificationExecutor<Order>, CustomizedOrderRepository {
 
     @Query("""
             select o.orderId as orderId, o.productId as productId, o.customerId as customerId,

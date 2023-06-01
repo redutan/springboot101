@@ -1,6 +1,7 @@
 package xyz.groundx.gxstore.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.querydsl.core.annotations.QueryProjection;
 import jakarta.validation.constraints.NotNull;
 
 import java.math.BigDecimal;
@@ -61,6 +62,8 @@ public class OrderDto {
 
     public record Summary(Long orderId, Long productId, Long customerId, String productName,
                           String smallImage, String imgAlt, BigDecimal price, LocalDateTime purchaseDate) {
-
+        @QueryProjection
+        public Summary {
+        }
     }
 }

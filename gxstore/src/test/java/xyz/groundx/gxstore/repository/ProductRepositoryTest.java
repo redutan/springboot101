@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import xyz.groundx.gxstore.model.Product;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
@@ -36,6 +38,18 @@ class ProductRepositoryTest {
         BigDecimal end = BigDecimal.valueOf(200L);
 
         List<Product> products = productRepository.findAllByPriceBetween(start, end);
+
+        assertThat(products).hasSize(2);
+    }
+
+    @Test
+    void findAllByPriceBetween2() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        BigDecimal start = BigDecimal.valueOf(100L);
+        BigDecimal end = BigDecimal.valueOf(200L);
+
+        Class<? extends ProductRepository> clazz = productRepository.getClass();
+        Method findAllByPriceBetween = clazz.getMethod("findAllByPriceBetween", BigDecimal.class, BigDecimal.class);
+        List<Product> products = (List<Product>) findAllByPriceBetween.invoke(productRepository, start, end);
 
         assertThat(products).hasSize(2);
     }

@@ -18,8 +18,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-web'
-//    implementation 'io.lettuce:lettuce-core'
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+// FIXME    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.1.0'
 
     implementation "com.querydsl:querydsl-jpa::jakarta"
     annotationProcessor "com.querydsl:querydsl-apt::jakarta"
@@ -31,12 +31,10 @@ dependencies {
     annotationProcessor 'org.hibernate:hibernate-jpamodelgen:6.2.2.Final'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    // implementation 'org.flywaydb:flyway-core'
-    // developmentOnly 'org.springframework.boot:spring-boot-devtools'
     testImplementation platform('org.spockframework:spock-bom:2.3-groovy-4.0')
     testImplementation 'org.spockframework:spock-core'
-    testImplementation platform('org.testcontainers:testcontainers-bom:1.18.0')
-    testImplementation 'org.testcontainers:testcontainers'
+    implementation platform('org.testcontainers:testcontainers-bom:1.18.0')
+    implementation 'org.testcontainers:testcontainers'
     testImplementation "org.testcontainers:junit-jupiter"
 }
 

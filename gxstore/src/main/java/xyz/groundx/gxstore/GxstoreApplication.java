@@ -11,7 +11,7 @@ import org.testcontainers.containers.FixedHostPortGenericContainer;
 @EnableJpaAuditing
 public class GxstoreApplication {
     static {
-        new FixedHostPortGenericContainer<>("redis:5.0.3-alpine").withFixedExposedPort(6379, 16379);
+        new FixedHostPortGenericContainer<>("redis:5.0.3-alpine").withFixedExposedPort(16379, 6379);
     }
 
     public static void main(String[] args) {

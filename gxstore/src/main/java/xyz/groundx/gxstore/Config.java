@@ -24,6 +24,7 @@ public class Config {
         return new RedisProductQueryProxy(dbProductService, objectMapper, host, port);
     }
 
+    // FIXME Remove @Primary
     @Primary
     @Bean
     CachedProductQueryProxy cachedProductQueryProxy(DbProductService dbProductService) {
@@ -35,6 +36,7 @@ public class Config {
         return new DbProductService(productRepository);
     }
 
+    // FIXME Add @Primary
     @Bean
     CachedProductService cachingAspectProductService(ProductRepository productRepository) {
         return new CachedProductService(productRepository);

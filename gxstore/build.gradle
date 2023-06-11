@@ -1,8 +1,10 @@
 plugins {
     id 'java'
     id 'groovy'
+    id 'idea'
     id 'org.springframework.boot' version '3.1.0'
     id 'io.spring.dependency-management' version '1.1.0'
+    id 'com.google.cloud.tools.jib' version '3.3.2' // jib
 }
 
 group = 'xyz.groundx'
@@ -34,8 +36,8 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation platform('org.spockframework:spock-bom:2.3-groovy-4.0')
     testImplementation 'org.spockframework:spock-core'
-    implementation platform('org.testcontainers:testcontainers-bom:1.18.0')
-    implementation 'org.testcontainers:testcontainers'
+    testImplementation platform('org.testcontainers:testcontainers-bom:1.18.0')
+    testImplementation 'org.testcontainers:testcontainers'
     testImplementation "org.testcontainers:junit-jupiter"
 }
 
@@ -49,4 +51,15 @@ configurations {
 
 tasks.named('test') {
     useJUnitPlatform()
+}
+
+jib {
+    // Jordan docker-hub repo
+    to {
+        image = 'redutan/gxstore'
+        auth {
+            username = 'redutan'
+            password = DOCKER_HUB_ACCESS_TOKEN // from `$home/.gradle/gradle.properties`
+        }
+    }
 }

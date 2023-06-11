@@ -78,7 +78,7 @@ public class CustomerController {
         return customerService.getCustomer(customerId);
     }
 
-    @Hidden
+    @Operation(summary = "고객 수정",hidden = true)
     @PutMapping("/{customerId}")
     public CustomerDto.View modify(@PathVariable Long customerId, @Valid @RequestBody CustomerDto.Modify body) {
         return customerService.modifyCustomer(customerId, body);

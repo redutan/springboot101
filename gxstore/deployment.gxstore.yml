@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gxstore-deployment
+  labels:
+    app: gxstore
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gxstore
+  template:
+    metadata:
+      labels:
+        app: gxstore
+    spec:
+      containers:
+        - name: gxstore
+          image: redutan/gxstore
+          ports:
+            - containerPort: 8080
